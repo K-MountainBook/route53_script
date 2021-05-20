@@ -1,0 +1,15 @@
+#/bin/bash
+
+echo "Template file : dyndns.tmpl"
+echo "Get global IP from httpbin.org/ip"
+curl httpbin.org/ip > globalip.json
+
+echo "Check global IP"
+cat globalip.json
+
+echo "Update route53 record"
+test=$(jq ".origin" globalip.json)
+
+sed -e "s/{%IP%}/${test}/g;s/{%HOST%}/test/g" dyndns.tmpl > update.json
+
+aws route53 change-resource-record-sets --profile route53dnsupdate --hosted-zone-id Z0994614RXJINWNH6CJV --change-batch file:///home/mcserver/route53/update.json
