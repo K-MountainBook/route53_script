@@ -12,4 +12,4 @@ test=$(jq ".origin" globalip.json)
 
 sed -e "s/{%IP%}/${test}/g;s/{%HOST%}/test/g" dyndns_sample.tmpl > update.json
 
-aws route53 change-resource-record-sets --profile route53dnsupdate --hosted-zone-id Z0994614RXJINWNH6CJV --change-batch file:///home/mcserver/route53/update.json
+aws route53 change-resource-record-sets --profile route53dnsupdate --hosted-zone-id HOST_ZONE_ID --change-batch file://FILE_LOCATION
